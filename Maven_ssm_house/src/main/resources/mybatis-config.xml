@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--mybatis设置-->
+    <settings>
+        <!--启用二级缓存-->
+        <setting name="cacheEnabled" value="true"/>
+        <!--启用延时加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--每种属性按需加载-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <!--开启将下划线映射到驼峰命名的规则规则-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--允许多种结果集从一个单独的语句中返回-->
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <!--使用列标签代替列名-->
+        <setting name="useColumnLabel" value="true"/>
+        <!--允许插入数据中设置主键并返回-->
+        <setting name="useGeneratedKeys" value="true"/>
+        <!--设置默认执行器-->
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+        <!--设置超时时间-->
+        <setting name="defaultStatementTimeout" value="25000"/>
+
+    </settings>
+    <typeAliases>
+        <typeAlias type="com.fc.pojo.User" alias="user"/>
+        <typeAlias type="com.fc.pojo.Userlist" alias="userList"/>
+        <typeAlias type="com.fc.pojo.Houselist" alias="houselist"/>
+        <typeAlias type="com.fc.pojo.Zulist" alias="zulist"/>
+        <typeAlias type="com.fc.pojo.Hetong" alias="hetong"/>
+        <typeAlias type="com.fc.pojo.Checkout" alias="checkout"/>
+        <typeAlias type="com.fc.pojo.Apply" alias="apply"/>
+        <typeAlias type="com.fc.pojo.Applyout" alias="applyout"/>
+        <typeAlias type="com.fc.pojo.Wrong" alias="wrong"/>
+        <typeAlias type="com.fc.pojo.Solve" alias="solve"/>
+        <typeAlias type="com.fc.pojo.Paid" alias="paid"/>
+    </typeAliases>
+    <!--pageHelper-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!--方言，告知pageHelper对哪种数据库进行分页-->
+            <property name="helperDialect" value="mysql"/>
+
+            <!--合理化分页参数-->
+            <property name="reasonable" value="true"/>
+
+            <!--通过mapper接口传参-->
+            <property name="supportMethodsArguments" value="true"/>
+        </plugin>
+    </plugins>
+    <mappers>
+        <mapper resource="com/fc/mapper/UserMapper.xml"/>
+        <mapper resource="com/fc/mapper/UserlistMapper.xml"/>
+        <mapper resource="com/fc/mapper/HouselistMapper.xml"/>
+        <mapper resource="com/fc/mapper/HetongMapper.xml"/>
+        <mapper resource="com/fc/mapper/CheckoutMapper.xml"/>
+        <mapper resource="com/fc/mapper/ZulistMapper.xml"/>
+        <mapper resource="com/fc/mapper/ApplyMapper.xml"/>
+        <mapper resource="com/fc/mapper/ApplyoutMapper.xml"/>
+        <mapper resource="com/fc/mapper/WrongMapper.xml"/>
+        <mapper resource="com/fc/mapper/SolveMapper.xml"/>
+        <mapper resource="com/fc/mapper/PaidMapper.xml"/>
+    </mappers>
+</configuration>

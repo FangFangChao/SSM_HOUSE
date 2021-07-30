@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.dao.ApplyMapper">
+    <cache/>
+    <resultMap id="BaseResultMap" type="com.fc.pojo.Apply">
+        <id column="apply_id" jdbcType="INTEGER" property="applyId"/>
+        <id column="house_id" jdbcType="VARCHAR" property="houseId"/>
+        <result column="userlist_id" jdbcType="INTEGER" property="userlistId"/>
+        <association property="houselist" javaType="com.fc.pojo.Houselist">
+            <id column="id" jdbcType="INTEGER" property="id"/>
+            <id column="houseid" jdbcType="VARCHAR" property="houseid"/>
+            <result column="address" jdbcType="VARCHAR" property="address"/>
+            <result column="area" jdbcType="DOUBLE" property="area"/>
+            <result column="price" jdbcType="DOUBLE" property="price"/>
+            <result column="status" jdbcType="VARCHAR" property="status"/>
+        </association>
+        <association property="userlist" javaType="com.fc.pojo.Userlist">
+            <id column="id" jdbcType="INTEGER" property="id"/>
+            <id column="idcard" jdbcType="VARCHAR" property="idcard"/>
+            <result column="name" jdbcType="VARCHAR" property="name"/>
+            <result column="phone" jdbcType="VARCHAR" property="phone"/>
+            <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        </association>
+    </resultMap>
+    <select id="findAllApply" parameterType="apply" resultMap="BaseResultMap">
+        select a.*,h.*,u.* from apply a,houselist h,userlist u where a.house_id=h.houseid and a.userlist_id=u.id
+    </select>
+    <delete id="deleteapply" parameterType="java.lang.String">
+        delete from apply where house_id=#{houseId}
+    </delete>
+    <insert id="insertApply" parameterType="apply">
+        insert into apply(house_id,userlist_id) values (#{houseid},#{userlistId})
+    </insert>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        apply_id, house_id, userlist_id
+    </sql>
+    <select id="selectByExample" parameterType="com.fc.pojo.ApplyExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from apply
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="com.fc.pojo.ApplyKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from apply
+        where apply_id = #{applyId,jdbcType=INTEGER}
+        and house_id = #{houseId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="com.fc.pojo.ApplyKey">
+        delete from apply
+        where apply_id = #{applyId,jdbcType=INTEGER}
+        and house_id = #{houseId,jdbcType=VARCHAR}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.fc.pojo.ApplyExample">
+        delete from apply
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.fc.pojo.Apply">
+        insert into apply (apply_id, house_id, userlist_id
+        )
+        values (#{applyId,jdbcType=INTEGER}, #{houseId,jdbcType=VARCHAR}, #{userlistId,jdbcType=INTEGER}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.fc.pojo.Apply">
+        insert into apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applyId != null">
+                apply_id,
+            </if>
+            <if test="houseId != null">
+                house_id,
+            </if>
+            <if test="userlistId != null">
+                userlist_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applyId != null">
+                #{applyId,jdbcType=INTEGER},
+            </if>
+            <if test="houseId != null">
+                #{houseId,jdbcType=VARCHAR},
+            </if>
+            <if test="userlistId != null">
+                #{userlistId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.fc.pojo.ApplyExample" resultType="java.lang.Long">
+        select count(*) from apply
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update apply
+        <set>
+            <if test="record.applyId != null">
+                apply_id = #{record.applyId,jdbcType=INTEGER},
+            </if>
+            <if test="record.houseId != null">
+                house_id = #{record.houseId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.userlistId != null">
+                userlist_id = #{record.userlistId,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update apply
+        set apply_id = #{record.applyId,jdbcType=INTEGER},
+        house_id = #{record.houseId,jdbcType=VARCHAR},
+        userlist_id = #{record.userlistId,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fc.pojo.Apply">
+        update apply
+        <set>
+            <if test="userlistId != null">
+                userlist_id = #{userlistId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where apply_id = #{applyId,jdbcType=INTEGER}
+        and house_id = #{houseId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fc.pojo.Apply">
+        update apply
+        set userlist_id = #{userlistId,jdbcType=INTEGER}
+        where apply_id = #{applyId,jdbcType=INTEGER}
+        and house_id = #{houseId,jdbcType=VARCHAR}
+    </update>
+</mapper>
